@@ -6,14 +6,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/votes")
+@RequestMapping("/vote")
 @RequiredArgsConstructor
 public class VoteController {
     private final VoteService voteService;
 
-    @PostMapping("/{userId}/{optionId}")
-    public ResponseEntity<String> vote(@PathVariable Long userId, @PathVariable Long optionId) {
-        String result = voteService.castVote(userId, optionId);
+    @PostMapping("/cast")
+    public ResponseEntity<String> castVote(
+            @RequestParam Long userId,
+            @RequestParam Long optionId,
+            @RequestParam Long pollId, // Added pollId to allow voting in different polls
+            @RequestHeader("Authorization") String token) {
+
+        // Remove "Bearer " prefix from token header
+        String tokenValue = token.replace("Bearer ", "").trim();
+
+        String result = voteService.castVote(userId, optionId, pollId, tokenValue); // Updated method call with pollId
         return ResponseEntity.ok(result);
     }
 }

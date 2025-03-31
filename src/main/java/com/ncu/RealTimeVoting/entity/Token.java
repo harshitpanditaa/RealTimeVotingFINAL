@@ -1,21 +1,30 @@
 package com.ncu.RealTimeVoting.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "tokens")
+@Table(name = "token") // Ensuring correct table mapping
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
 public class Token {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "user_id", nullable = false)
     private Long userId;
+
+    @Column(name = "token", nullable = false, unique = true) // Renamed to match repo method
     private String token;
-    private LocalDateTime expiresAt;
+
+    //  Constructor to fix TokenService error
+    public Token(Long id, Long userId, String token) {
+        this.id = id;
+        this.userId = userId;
+        this.token = token;
+    }
 }

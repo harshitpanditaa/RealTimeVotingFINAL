@@ -1,26 +1,39 @@
 package com.ncu.RealTimeVoting.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "option_vote_counts")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class OptionVoteCount {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(optional = false, fetch = FetchType.LAZY)
-    @JoinColumn(name = "option_id", nullable = false, unique = true)
+    @Column(name = "poll_id", nullable = false)
+    private Long pollId;
+
     @JsonIgnore
+    @OneToOne
+    @JoinColumn(name = "option_id", nullable = false)
     private Option option;
 
     private int voteCount;
+
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "poll_id", insertable = false, updatable = false)
+    private Poll poll;
+
+    // Fixed constructor to properly initialize fields
+    public OptionVoteCount(Option option, Long pollId, int voteCount) {
+        this.option = option;
+        this.pollId = pollId;
+        this.voteCount = voteCount;
+    }
 }

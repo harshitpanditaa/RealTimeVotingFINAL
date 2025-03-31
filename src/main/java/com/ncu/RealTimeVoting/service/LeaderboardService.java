@@ -14,6 +14,6 @@ public class LeaderboardService {
     private final OptionVoteCountRepository optionVoteCountRepository;
 
     public List<OptionVoteCount> getLeaderboard() {
-        return optionVoteCountRepository.findAllByOrderByVoteCountDesc();
+        return optionVoteCountRepository.findAll();
     }
 }

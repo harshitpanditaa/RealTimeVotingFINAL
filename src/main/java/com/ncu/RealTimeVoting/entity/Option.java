@@ -1,15 +1,19 @@
 package com.ncu.RealTimeVoting.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
 
 @Entity
-@Table(name = "options")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
+@Table(name = "options")
 public class Option {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +21,8 @@ public class Option {
 
     private String text;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "poll_id", nullable = false)
+    @JsonBackReference
     private Poll poll;
 }

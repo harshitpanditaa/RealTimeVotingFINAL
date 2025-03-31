@@ -2,8 +2,11 @@ package com.ncu.RealTimeVoting.repository;
 
 import com.ncu.RealTimeVoting.entity.Option;
 import org.springframework.data.jpa.repository.JpaRepository;
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
+@Repository
 public interface OptionRepository extends JpaRepository<Option, Long> {
-    List<Option> findByPollId(Long pollId);
+    Optional<Option> findById(Long id);
 }
